@@ -46,14 +46,16 @@ const Customer = ({state}: Props) => {
         dispatch(addCustomer({
             id: '',
             name: 'Torchbox',
-            address: 'Address'
+            address: 'Address',
+            currency: "GBP"
         }))
     }
     const _editCustomer = (e: FormEvent<HTMLFormElement>) => {
         dispatch(editCustomer({
             id: '',
             name: 'Torchbox',
-            address: 'Address'
+            address: 'Address',
+            currency: "GBP"
         }))
     }
     return (

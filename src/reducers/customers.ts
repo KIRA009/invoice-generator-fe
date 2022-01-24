@@ -1,22 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk } from "../store";
+import { AppThunk, RootState, Store } from "../store";
 import { Customer } from "../types/customer";
 
-interface initialState {
-    customers: Customer[]
-}
+type initialState = Customer[];
 
 const customers = createSlice({
     name: 'customers',
-    initialState: {
-        customers: []
-    },
+    initialState: [],
     reducers: {
         addCustomer: (state: initialState, action: PayloadAction<Customer>) => {
-            state.customers.push(action.payload);
+            state.push(action.payload);
         },
         editCustomer: (state: initialState, action: PayloadAction<Customer>) => {
-            let customer = state.customers.find(customer => customer.id === action.payload.id);
+            let customer = state.find(customer => customer.id === action.payload.id);
             customer = {...action.payload};
         }
     }
@@ -39,3 +35,6 @@ export const editCustomer = (payload: Customer): AppThunk => (dispatch) => {
         ...payload
     }))
 }
+
+
+export const getCustomers = (state: RootState) => state.customers;
