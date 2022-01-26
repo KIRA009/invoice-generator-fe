@@ -45,8 +45,12 @@ const Customer = ({state}: Props) => {
         e.preventDefault();
         dispatch(addCustomer({
             id: '',
-            name: 'Torchbox',
-            address: 'Address',
+            name: 'Torchbox Ltd',
+            address: `The Top Floor, Southill Barn, Southill Business Park,
+            Cornbury Park
+            Charlbury, Oxfordshire
+            OX7 3EW
+            United Kingdom`,
             currency: "GBP"
         }))
     }

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk, RootState, Store } from "../store";
+import { AppThunk, RootState } from "../store";
 import { Invoice } from "../types/invoice";
 
 type initialState = Invoice[]

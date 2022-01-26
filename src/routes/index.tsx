@@ -6,6 +6,7 @@ import {
 import { AddCustomer } from "../pages/AddCustomer";
 import { AddInvoice } from "../pages/AddInvoice";
 import { Home } from "../pages/Home";
+import { Invoices } from "../pages/Invoices";
 import { RouteInterface } from "../types/route";
 
 
@@ -22,6 +23,10 @@ const routes: RouteInterface[] = [
         url: '/customer/add/',
         component: AddCustomer
     },
+    {
+        url: '/invoices',
+        component: Invoices
+    }
 ]
 
 

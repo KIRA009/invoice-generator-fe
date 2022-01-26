@@ -54,9 +54,9 @@ export const ItemList = ({items, setItems}: Props) => {
                 <tbody>
                     <tr>
                         <td><input type="text" ref={itemDescriptionRef} /></td>
-                        <td><input type="text" ref={itemQuantityRef} /></td>
-                        <td><input type="text" ref={itemRateRef} /></td>
-                        <td><input type="text" readOnly /><button onClick={addItem}>Add</button></td>
+                        <td><input type="number" ref={itemQuantityRef} /></td>
+                        <td><input type="number" ref={itemRateRef} /></td>
+                        <td><input type="number" readOnly /><button onClick={addItem}>Add</button></td>
                     </tr>
                     {items.map((item, index) => (
                         <tr key={index}>
