@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppThunk, RootState } from "../store";
-import { Invoice } from "../types/invoice";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AppThunk, RootState } from '../store';
+import { Invoice } from '../types/invoice';
 
 type initialState = Invoice[];
 
@@ -44,4 +44,4 @@ export const editInvoice =
         );
     };
 
-export const getInvoices = (state: RootState) => state.invoices;
+export const getInvoices = (state: RootState): Invoice[] => state.invoices;
