@@ -59,7 +59,7 @@
     "prettier": "^2.5.1"
   },
   "lint-staged": {
-    "src/*.{ts,tsx}": [
+    "*.{ts,tsx}": [
       "yarn prettier:fix",
       "yarn lint"
     ]

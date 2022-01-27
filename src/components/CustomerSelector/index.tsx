@@ -17,5 +17,5 @@ export const CustomerSelector = ({customerRef}: Props) => {
                 <option value={customer.id}>{customer.name}</option>
             ))}
         </select>
-    )
+    );
 };

@@ -25,22 +25,27 @@ const customers = createSlice({
 
 export default customers.reducer;
 
+export const addCustomer =
+    (payload: Customer): AppThunk =>
+    async (dispatch) => {
+        const id = new Date().getTime().toString();
+        dispatch(
+            customers.actions.addCustomer({
+                ...payload,
+                id,
+            })
+        );
+    };
 
-export const addCustomer = (payload: Customer): AppThunk => async (dispatch) => {
-    const id = (new Date()).getTime().toString();
-    dispatch(customers.actions.addCustomer({
-        ...payload,
-        id
-    }))
-}
-
-
-export const editCustomer = (payload: Customer): AppThunk => (dispatch) => {
-    dispatch(customers.actions.editCustomer({
-        ...payload
-    }))
-}
-
+export const editCustomer =
+    (payload: Customer): AppThunk =>
+    (dispatch) => {
+        dispatch(
+            customers.actions.editCustomer({
+                ...payload,
+            })
+        );
+    };
 
 export const getCustomers = (state: RootState): Customer[] => state.customers;
 export const getCustomer = (id: string) => (state: RootState): Customer => {

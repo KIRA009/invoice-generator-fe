@@ -1,44 +1,49 @@
 import React, { MouseEvent, useEffect, useRef, useState } from 'react';
-import { InvoiceItem } from "../../types/invoice-item"
+import { InvoiceItem } from '../../types/invoice-item';
 
 interface Props {
     items: InvoiceItem[];
-    setItems: React.Dispatch<React.SetStateAction<InvoiceItem[]>>
+    setItems: React.Dispatch<React.SetStateAction<InvoiceItem[]>>;
 }
 
-
-export const ItemList = ({items, setItems}: Props) => {
+export const ItemList = ({ items, setItems }: Props) => {
     const [total, setTotal] = useState(0 as number);
     const itemDescriptionRef = useRef<HTMLInputElement>(null);
     const itemQuantityRef = useRef<HTMLInputElement>(null);
     const itemRateRef = useRef<HTMLInputElement>(null);
     const addItem = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        setItems(prev => {
-            if (!itemDescriptionRef.current || !itemQuantityRef.current || !itemRateRef.current) return prev;
+        setItems((prev) => {
+            if (
+                !itemDescriptionRef.current ||
+                !itemQuantityRef.current ||
+                !itemRateRef.current
+            )
+                return prev;
             const itemDetails: InvoiceItem = {
                 itemDetail: itemDescriptionRef.current.value,
                 quantity: Number(itemQuantityRef.current.value),
                 rate: Number(itemRateRef.current.value),
-                amount: 0
+                amount: 0,
             };
             itemDetails.amount = itemDetails.rate * itemDetails.quantity;
-            if (itemDetails.amount === 0 || itemDetails.itemDetail.length === 0) return prev;
+            if (itemDetails.amount === 0 || itemDetails.itemDetail.length === 0)
+                return prev;
             let newItems = [...prev];
-            newItems.push(itemDetails)
+            newItems.push(itemDetails);
             return newItems;
-        })
-    }
+        });
+    };
     const removeItem = (e: MouseEvent<HTMLButtonElement>, index: number) => {
-        setItems(prev => {
+        setItems((prev) => {
             let newItems = [...prev];
             newItems.splice(index, 1);
             return newItems;
-        })
-    }
+        });
+    };
     useEffect(() => {
-        setTotal(items.reduce((a, b) => a + b.amount, 0))
-    }, [items])
+        setTotal(items.reduce((a, b) => a + b.amount, 0));
+    }, [items]);
     return (
         <div>
             <table>
@@ -63,17 +68,18 @@ export const ItemList = ({items, setItems}: Props) => {
                             <td>{item.itemDetail}</td>
                             <td>{item.quantity}</td>
                             <td>{item.rate}</td>
-                            <td>{item.amount} <button onClick={e => removeItem(e, index)}>Delete</button></td>
+                            <td>
+                                {item.amount}{' '}
+                                <button onClick={(e) => removeItem(e, index)}>
+                                    Delete
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <div>
-                Subtotal: {total}
-            </div>
-            <div>
-                Total: {total}
-            </div>
+            <div>Subtotal: {total}</div>
+            <div>Total: {total}</div>
         </div>
-    )
-}
+    );
+};

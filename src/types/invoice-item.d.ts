@@ -2,5 +2,5 @@ export interface InvoiceItem {
     itemDetail: string;
     quantity: number;
     rate: number;
-    amount: number   
+    amount: number;
 }

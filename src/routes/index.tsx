@@ -13,15 +13,15 @@ import { RouteInterface } from "../types/route";
 const routes: RouteInterface[] = [
     {
         url: '/',
-        component: Home
+        component: Home,
     },
     {
         url: '/invoice/add/',
-        component: AddInvoice
+        component: AddInvoice,
     },
     {
         url: '/customer/add/',
-        component: AddCustomer
+        component: AddCustomer,
     },
     {
         url: '/invoices',
@@ -34,11 +34,14 @@ export const Router = () => {
     return (
         <BrowserRouter>
             <Routes>
-                {routes.map(route => (
-                    <Route path={route.url} key={route.url} element={<route.component />} />
+                {routes.map((route) => (
+                    <Route
+                        path={route.url}
+                        key={route.url}
+                        element={<route.component />}
+                    />
                 ))}
             </Routes>
         </BrowserRouter>
-    )
-}
-
+    );
+};

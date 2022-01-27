@@ -56,5 +56,5 @@ export const InvoiceBody = () => {
         <ItemList items={items} setItems={setItems} />
         <button onClick={save}>Save</button>
         </>
-    )
-}
+    );
+};
