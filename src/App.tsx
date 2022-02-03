@@ -3,6 +3,8 @@ import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Store } from './store';
 import { Router } from './routes';
+import { AppShell, MantineProvider } from '@mantine/core';
+import { theme } from './theme';
 
 type Props = {
     store: Store;
@@ -13,7 +15,11 @@ export const App = ({ store }: Props) => {
     return (
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <Router />
+                <MantineProvider theme={theme}>
+                    <AppShell padding='md'>
+                        <Router />
+                    </AppShell>
+                </MantineProvider>
             </PersistGate>
         </Provider>
     );

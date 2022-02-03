@@ -1,0 +1,6 @@
+.mantine-TextInput-root,
+.mantine-Textarea-root {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    margin-bottom: 20px;
+}

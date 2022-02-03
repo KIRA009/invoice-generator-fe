@@ -2,6 +2,10 @@ import { FormEvent, RefObject, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { addCustomer, editCustomer } from '../../reducers/customers';
 import { Customer as CustomerType } from '../../types/customer';
+import classes from './style.module.scss';
+
+import { TextInput, Textarea, Button, Container, Text } from '@mantine/core';
+import { Link } from 'react-router-dom';
 
 export enum States {
     View = 0,
@@ -35,53 +39,34 @@ const CustomerForm = ({
 }: FormProps) => {
     return (
         <>
-            <div className='input'>
-                <label htmlFor='customer-name'>Name</label>
-                <input
-                    id='customer-name'
-                    type='text'
-                    readOnly={!(isAdding(state) || isEditing(state))}
-                    required
-                    ref={nameRef}
-                />
-            </div>
-            <div className='input'>
-                <label htmlFor='customer-currency'>Currency</label>
-                <input
-                    id='customer-currency'
-                    type='text'
-                    readOnly={!(isAdding(state) || isEditing(state))}
-                    required
-                    ref={currencyRef}
-                />
-            </div>
-            <div className='input'>
-                <label htmlFor='customer-address'>Address</label>
-                <textarea
-                    id='customer-address'
-                    readOnly={!(isAdding(state) || isEditing(state))}
-                    required
-                    ref={addressRef}
-                />
-            </div>
-            <div className='input'>
-                <label htmlFor='customer-email'>Email</label>
-                <input
-                    id='customer-email'
-                    type='email'
-                    readOnly={!(isAdding(state) || isEditing(state))}
-                    ref={emailRef}
-                />
-            </div>
-            <div className='input'>
-                <label htmlFor='customer-website'>Website</label>
-                <input
-                    id='customer-website'
-                    type='text'
-                    readOnly={!(isAdding(state) || isEditing(state))}
-                    ref={websiteRef}
-                />
-            </div>
+            <TextInput
+                required
+                label='Name'
+                readOnly={!(isAdding(state) || isEditing(state))}
+                ref={nameRef}
+            />
+            <TextInput
+                required
+                label='Currency'
+                readOnly={!(isAdding(state) || isEditing(state))}
+                ref={currencyRef}
+            />
+            <Textarea
+                required
+                label='Address'
+                readOnly={!(isAdding(state) || isEditing(state))}
+                ref={addressRef}
+            />
+            <TextInput
+                label='Email'
+                readOnly={!(isAdding(state) || isEditing(state))}
+                ref={emailRef}
+            />
+            <TextInput
+                label='Website'
+                readOnly={!(isAdding(state) || isEditing(state))}
+                ref={websiteRef}
+            />
         </>
     );
 };
@@ -123,7 +108,6 @@ const Customer = ({ state }: Props) => {
             newCustomer.email = emailRef.current!.value;
         if (websiteRef.current!.value)
             newCustomer.website = websiteRef.current!.value;
-        console.log(newCustomer);
 
         dispatch(addCustomer(newCustomer));
     };
@@ -144,14 +128,15 @@ const Customer = ({ state }: Props) => {
     };
 
     return (
-        <div>
-            <h1>
-                {isViewing(state)
+        <Container size='xs'>
+            <Text component='h1' size='xl'>
+                {(isViewing(state)
                     ? `View customer details`
                     : isEditing(state)
                     ? `Edit customer details`
-                    : `Add new customer`}
-            </h1>
+                    : `Add new customer`
+                ).toUpperCase()}
+            </Text>
             {isViewing(state) ? (
                 <CustomerForm state={state} />
             ) : (
@@ -166,15 +151,17 @@ const Customer = ({ state }: Props) => {
                             websiteRef,
                         }}
                     />
-                    <div className='input'>
-                        <input
-                            type='submit'
-                            value={isAdding(state) ? `Add` : `Save changes`}
-                        />
+                    <div className={classes.form_actions}>
+                        <Link to='/invoice/add/'>
+                            <Text>Create an invoice</Text>
+                        </Link>
+                        <Button type='submit' variant='filled'>
+                            {isAdding(state) ? `Add` : `Save changes`}
+                        </Button>
                     </div>
                 </form>
             )}
-        </div>
+        </Container>
     );
 };
 
