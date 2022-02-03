@@ -12,10 +12,17 @@ const invoices = createSlice({
             state.push(action.payload);
         },
         editInvoice: (state: initialState, action: PayloadAction<Invoice>) => {
-            let invoice = state.find(
-                (invoice) => invoice.id === action.payload.id
-            );
-            invoice = { ...action.payload };
+            let invoiceIndex = -1;
+            state.forEach((invoice, index) => {
+                if (invoiceIndex !== -1) return;
+                if (invoice.id === action.payload.id) invoiceIndex = index;
+            });
+            if (invoiceIndex !== -1) {
+                state[invoiceIndex] = {
+                    ...action.payload,
+                    id: state[invoiceIndex].id,
+                };
+            }
         },
     },
 });
