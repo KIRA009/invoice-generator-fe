@@ -42,7 +42,7 @@ const customers = createSlice({
 export default customers.reducer;
 
 export const addCustomer =
-    (payload: Customer): AppThunk =>
+    (payload: Customer, cb: () => void): AppThunk =>
     async (dispatch) => {
         const id = new Date().getTime().toString();
         dispatch(
@@ -51,6 +51,7 @@ export const addCustomer =
                 id,
             })
         );
+        cb();
     };
 
 export const editCustomer =

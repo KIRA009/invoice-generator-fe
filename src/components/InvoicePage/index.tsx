@@ -16,17 +16,6 @@ export const InvoicePage = ({ invoice, customer }: Props) => {
         .split(' ')
         .map((w) => w[0].toUpperCase() + w.substring(1).toLowerCase())
         .join(' ');
-    let creationDate: Date = new Date(invoice.creationDate);
-    const creationDateStr =
-        (creationDate.getDate() > 9
-            ? creationDate.getDate()
-            : '0' + creationDate.getDate()) +
-        '/' +
-        (creationDate.getMonth() > 8
-            ? creationDate.getMonth() + 1
-            : '0' + (creationDate.getMonth() + 1)) +
-        '/' +
-        creationDate.getFullYear();
     return (
         <Document>
             <Page style={compose('invoice_wrapper')}>
@@ -62,7 +51,7 @@ export const InvoicePage = ({ invoice, customer }: Props) => {
                             Invoice Date:{' '}
                         </Text>
                         <Text style={compose('fs-small bold')}>
-                            {creationDateStr}
+                            {invoice.creationDate}
                         </Text>
                     </View>
                 </View>

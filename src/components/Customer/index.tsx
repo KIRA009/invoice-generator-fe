@@ -2,10 +2,11 @@ import { FormEvent, RefObject, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { addCustomer, editCustomer } from '../../reducers/customers';
 import { Customer as CustomerType } from '../../types/customer';
-import classes from './style.module.scss';
-
+import classes from './styles.module.scss';
 import { TextInput, Textarea, Button, Container, Text } from '@mantine/core';
 import { Link } from 'react-router-dom';
+import { useNotifications } from '@mantine/notifications';
+import { CheckCircledIcon } from '@modulz/radix-icons';
 
 export enum States {
     View = 0,
@@ -72,6 +73,7 @@ const CustomerForm = ({
 };
 
 const Customer = ({ state }: Props) => {
+    const notifications = useNotifications();
     const dispatch = useDispatch();
     const nameRef = useRef<HTMLInputElement>(null);
     const currencyRef = useRef<HTMLInputElement>(null);
@@ -109,7 +111,15 @@ const Customer = ({ state }: Props) => {
         if (websiteRef.current!.value)
             newCustomer.website = websiteRef.current!.value;
 
-        dispatch(addCustomer(newCustomer));
+        dispatch(
+            addCustomer(newCustomer, () => {
+                notifications.showNotification({
+                    message: 'New customer added',
+                    color: 'green',
+                    icon: <CheckCircledIcon />,
+                });
+            })
+        );
     };
     const _editCustomer = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -130,12 +140,11 @@ const Customer = ({ state }: Props) => {
     return (
         <Container size='xs'>
             <Text component='h1' size='xl'>
-                {(isViewing(state)
-                    ? `View customer details`
+                {isViewing(state)
+                    ? `VIEW CUSTOMER DETAILS`
                     : isEditing(state)
-                    ? `Edit customer details`
-                    : `Add new customer`
-                ).toUpperCase()}
+                    ? `EDIT CUSTOMER DETAILS`
+                    : `ADD NEW CUSTOMER`}
             </Text>
             {isViewing(state) ? (
                 <CustomerForm state={state} />

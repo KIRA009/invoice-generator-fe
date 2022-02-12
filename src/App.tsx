@@ -4,6 +4,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { Store } from './store';
 import { Router } from './routes';
 import { AppShell, MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
 import { theme } from './theme';
 
 type Props = {
@@ -16,9 +17,11 @@ export const App = ({ store }: Props) => {
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
                 <MantineProvider theme={theme}>
-                    <AppShell padding='md'>
-                        <Router />
-                    </AppShell>
+                    <NotificationsProvider position='top-right'>
+                        <AppShell padding='md'>
+                            <Router />
+                        </AppShell>
+                    </NotificationsProvider>
                 </MantineProvider>
             </PersistGate>
         </Provider>

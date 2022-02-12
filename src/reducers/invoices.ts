@@ -30,7 +30,7 @@ const invoices = createSlice({
 export default invoices.reducer;
 
 export const addInvoice =
-    (payload: Invoice): AppThunk =>
+    (payload: Invoice, cb: () => void): AppThunk =>
     async (dispatch) => {
         const id = new Date().getTime().toString();
         dispatch(
@@ -39,6 +39,7 @@ export const addInvoice =
                 id,
             })
         );
+        cb();
     };
 
 export const editInvoice =

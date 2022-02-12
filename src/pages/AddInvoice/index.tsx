@@ -1,12 +1,15 @@
-import { InvoiceBody } from "../../components/InvoiceBody";
+import { InvoiceBody } from '../../components/InvoiceBody';
+import { Container, Text } from '@mantine/core';
 
 export const AddInvoice = () => {
-  return (
-    <div>
-      <h1>New invoice</h1>
-      <form>
-      <InvoiceBody />
-      </form>
-    </div>
-  );
+    return (
+        <Container size='sm'>
+            <Text component='h1' size='xl'>
+                NEW INVOICE
+            </Text>
+            <form>
+                <InvoiceBody />
+            </form>
+        </Container>
+    );
 };

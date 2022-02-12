@@ -5,20 +5,27 @@ import { InvoiceItem } from '../../types/invoice-item';
 import { CustomerSelector } from '../CustomerSelector';
 import { ItemList } from '../ItemList';
 import { Invoice } from '../../types/invoice';
+import { TextInput, Button, Text } from '@mantine/core';
+import { DatePicker } from '@mantine/dates';
+import { useNotifications } from '@mantine/notifications';
+import { CrossCircledIcon, CheckCircledIcon } from '@modulz/radix-icons';
+import { Link } from 'react-router-dom';
+import classes from './styles.module.scss';
 
 export const InvoiceBody = () => {
+    const notifications = useNotifications();
+    const [selectedCustomer, setSelectedCustomer] = useState<string>('');
     const [items, setItems] = useState<InvoiceItem[]>([]);
     const invoices = useSelector(getInvoices);
     const dispatch = useDispatch();
     const numberRef = useRef<HTMLInputElement>(null);
-    const creationDateRef = useRef<HTMLInputElement>(null);
-    const dueDateRef = useRef<HTMLInputElement>(null);
+    const creationDateRef = useRef<HTMLButtonElement>(null);
+    const dueDateRef = useRef<HTMLButtonElement>(null);
     const subjectRef = useRef<HTMLInputElement>(null);
-    const customerRef = useRef<HTMLSelectElement>(null);
+
     const save = (e: React.MouseEvent) => {
         e.preventDefault();
         if (
-            !customerRef.current ||
             !numberRef.current ||
             !creationDateRef.current ||
             !dueDateRef.current ||
@@ -26,27 +33,40 @@ export const InvoiceBody = () => {
         )
             return;
         if (
-            !creationDateRef.current.valueAsDate ||
+            !creationDateRef.current.value ||
             !numberRef.current.value ||
-            !customerRef.current.value ||
             !subjectRef.current.value
-        )
+        ) {
+            notifications.showNotification({
+                message: 'Please fill all required values',
+                color: 'red',
+                icon: <CrossCircledIcon />,
+            });
             return;
+        }
 
         const invoice: Invoice = {
             id: '',
             items,
-            customerId: customerRef.current.value,
-            creationDate: creationDateRef.current.valueAsDate,
+            customerId: selectedCustomer,
+            creationDate: creationDateRef.current.value,
             number: numberRef.current.value,
             subject: subjectRef.current.value,
         };
 
-        if (dueDateRef.current.valueAsDate) {
-            invoice.dueDate = dueDateRef.current.valueAsDate;
+        if (dueDateRef.current.value) {
+            invoice.dueDate = dueDateRef.current.value;
         }
 
-        dispatch(addInvoice(invoice));
+        dispatch(
+            addInvoice(invoice, () => {
+                notifications.showNotification({
+                    message: 'New customer added',
+                    color: 'green',
+                    icon: <CheckCircledIcon />,
+                });
+            })
+        );
     };
     const defaultInvoiceNum = useMemo(() => {
         let maxInvoiceNum = 0;
@@ -61,36 +81,36 @@ export const InvoiceBody = () => {
 
     return (
         <>
-            <CustomerSelector customerRef={customerRef} />
-            <div className='input'>
-                <label htmlFor='invoice-number'>Invoice Number</label>
-                <input
-                    id='invoice-number'
-                    defaultValue={defaultInvoiceNum}
-                    ref={numberRef}
-                    type='text'
-                    required
-                />
-            </div>
-            <div className='input'>
-                <label htmlFor='invoice-date'>Invoice date</label>
-                <input
-                    id='invoice-date'
-                    ref={creationDateRef}
-                    type='date'
-                    required
-                />
-            </div>
-            <div className='input'>
-                <label htmlFor='invoice-due-date'>Invoice due date</label>
-                <input id='invoice-due-date' ref={dueDateRef} type='date' />
-            </div>
-            <div className='input'>
-                <label htmlFor='invoice-subject'>Subject</label>
-                <input id='invoice-subject' ref={subjectRef} type='text' />
-            </div>
+            <CustomerSelector {...{ selectedCustomer, setSelectedCustomer }} />
+            <TextInput
+                required
+                label='Invoice Number'
+                ref={numberRef}
+                defaultValue={defaultInvoiceNum}
+            />
+            <DatePicker
+                inputFormat='DD/MM/YYYY'
+                ref={creationDateRef}
+                label='Invoice date'
+                required
+                defaultValue={new Date()}
+                clearable={false}
+            />
+            <DatePicker
+                inputFormat='DD/MM/YYYY'
+                ref={dueDateRef}
+                label='Invoice due date'
+            />
+            <TextInput required label='Subject' ref={subjectRef} />
             <ItemList items={items} setItems={setItems} />
-            <button onClick={save}>Save</button>
+            <div className={classes.form_actions}>
+                <Link to='/invoices'>
+                    <Text>View your invoice</Text>
+                </Link>
+                <Button type='submit' variant='filled' onClick={save}>
+                    Add Invoice
+                </Button>
+            </div>
         </>
     );
 };

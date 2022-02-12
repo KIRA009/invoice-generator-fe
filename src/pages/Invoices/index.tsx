@@ -7,6 +7,7 @@ import { Invoice } from '../../types/invoice';
 
 const InvoiceDetails = (invoice: Invoice) => {
     const customer = useSelector(getCustomer(invoice.customerId));
+    console.log(invoice.customerId, customer);
     return (
         <div key={invoice.id}>
             Invoice id: {invoice.id}
