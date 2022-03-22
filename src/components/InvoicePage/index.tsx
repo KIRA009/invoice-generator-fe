@@ -3,6 +3,7 @@ import compose from './compose';
 import { Invoice } from '../../types/invoice';
 import converter from 'number-to-words';
 import { Customer } from '../../types/customer';
+import { getInvoiceAmount } from '../../utils/invoiceAmount';
 
 interface Props {
     invoice: Invoice;
@@ -10,7 +11,7 @@ interface Props {
 }
 
 export const InvoicePage = ({ invoice, customer }: Props) => {
-    const sum = invoice.items.reduce((a, b) => a + b.amount, 0);
+    const sum = getInvoiceAmount(invoice);
     const wordSum = converter
         .toWords(sum)
         .split(' ')

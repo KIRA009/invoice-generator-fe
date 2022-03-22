@@ -105,7 +105,7 @@ export const InvoiceBody = () => {
             <ItemList items={items} setItems={setItems} />
             <div className={classes.form_actions}>
                 <Link to='/invoices'>
-                    <Text>View your invoice</Text>
+                    <Text>View your invoices</Text>
                 </Link>
                 <Button type='submit' variant='filled' onClick={save}>
                     Add Invoice

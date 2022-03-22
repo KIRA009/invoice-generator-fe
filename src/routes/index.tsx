@@ -1,19 +1,13 @@
-import {
-    BrowserRouter,
-    Routes,
-    Route
-} from "react-router-dom";
-import { AddCustomer } from "../pages/AddCustomer";
-import { AddInvoice } from "../pages/AddInvoice";
-import { Home } from "../pages/Home";
-import { Invoices } from "../pages/Invoices";
-import { RouteInterface } from "../types/route";
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AddCustomer } from '../pages/AddCustomer';
+import { AddInvoice } from '../pages/AddInvoice';
+import { Invoices } from '../pages/Invoices';
+import { RouteInterface } from '../types/route';
 
 const routes: RouteInterface[] = [
     {
         url: '/',
-        component: Home,
+        component: Invoices,
     },
     {
         url: '/invoice/add/',
@@ -25,10 +19,9 @@ const routes: RouteInterface[] = [
     },
     {
         url: '/invoices',
-        component: Invoices
-    }
-]
-
+        component: Invoices,
+    },
+];
 
 export const Router = () => {
     return (

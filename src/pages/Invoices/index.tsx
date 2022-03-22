@@ -4,26 +4,44 @@ import { InvoicePage } from '../../components/InvoicePage';
 import { getCustomer } from '../../reducers/customers';
 import { getInvoices } from '../../reducers/invoices';
 import { Invoice } from '../../types/invoice';
+import { Box, Container, Text } from '@mantine/core';
+import { Link } from 'react-router-dom';
+import classes from './styles.module.scss';
+import { getInvoiceAmount } from '../../utils/invoiceAmount';
 
 const InvoiceDetails = (invoice: Invoice) => {
     const customer = useSelector(getCustomer(invoice.customerId));
-    console.log(invoice.customerId, customer);
     return (
-        <div key={invoice.id}>
-            Invoice id: {invoice.id}
-            Invoice number: {invoice.number}
-            <PDFDownloadLink
-                document={<InvoicePage invoice={invoice} customer={customer} />}
-                fileName={`invoice.pdf`}
-                aria-label='Save PDF'
-            >
-                Download
-            </PDFDownloadLink>
-        </div>
+        <Box key={invoice.id} className={classes.invoice}>
+            <Text component='span'>
+                INV - {invoice.number} for £{getInvoiceAmount(invoice)}
+            </Text>
+            <Text component='span'>
+                <PDFDownloadLink
+                    document={
+                        <InvoicePage invoice={invoice} customer={customer} />
+                    }
+                    fileName={`INV - ${invoice.number}`}
+                    aria-label='Save PDF'
+                >
+                    Download
+                </PDFDownloadLink>
+            </Text>
+        </Box>
     );
 };
 
 export const Invoices = () => {
     const invoices: Invoice[] = useSelector(getInvoices);
-    return <div>{invoices.map((invoice) => InvoiceDetails(invoice))}</div>;
+    return (
+        <Container size='xs'>
+            <Text component='h1' size='xl'>
+                INVOICES
+            </Text>
+            {invoices.map((invoice) => InvoiceDetails(invoice))}
+            <Link to='/invoice/add/'>
+                <Text>Create an invoice</Text>
+            </Link>
+        </Container>
+    );
 };
