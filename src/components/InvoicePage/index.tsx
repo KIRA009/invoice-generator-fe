@@ -3,7 +3,11 @@ import compose from './compose';
 import { Invoice } from '../../types/invoice';
 import converter from 'number-to-words';
 import { Customer } from '../../types/customer';
-import { getInvoiceAmount } from '../../utils/invoiceAmount';
+import {
+    getInvoiceAmount,
+    getInvoiceAmountInString,
+    getLongStringCurrency,
+} from '../../utils/invoiceAmount';
 
 interface Props {
     invoice: Invoice;
@@ -17,6 +21,8 @@ export const InvoicePage = ({ invoice, customer }: Props) => {
         .split(' ')
         .map((w) => w[0].toUpperCase() + w.substring(1).toLowerCase())
         .join(' ');
+    const sumWithSymbol = getInvoiceAmountInString(sum, customer);
+    const currencyString = getLongStringCurrency(customer);
     return (
         <Document>
             <Page style={compose('invoice_wrapper')}>
@@ -132,7 +138,7 @@ export const InvoicePage = ({ invoice, customer }: Props) => {
                         Sub Total
                     </Text>
                     <Text style={compose('fs-small w-26 p-4-8 right')}>
-                        £{sum}
+                        {sumWithSymbol}
                     </Text>
                 </View>
                 <View style={compose('mt-small flex')}>
@@ -149,7 +155,7 @@ export const InvoicePage = ({ invoice, customer }: Props) => {
                             'fs-small w-26 p-4-8 right bold bg-light-gray'
                         )}
                     >
-                        £{sum}
+                        {sumWithSymbol}
                     </Text>
                 </View>
                 <View style={compose('mt-small flex')}>
@@ -158,7 +164,7 @@ export const InvoicePage = ({ invoice, customer }: Props) => {
                         Total in Words:
                     </Text>
                     <Text style={compose('fs-small w-26 p-4-8 right bold')}>
-                        Pound Sterling {wordSum}
+                        {wordSum} {currencyString}
                     </Text>
                 </View>
                 <View style={compose('mt-large')}>

@@ -4,6 +4,7 @@ import { Customer } from '../../types/customer';
 import { Select, Text } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import classes from './styles.module.scss';
+import { getLongStringCurrency } from '../../utils/invoiceAmount';
 
 interface Props {
     selectedCustomer: string;
@@ -25,7 +26,8 @@ export const CustomerSelector = ({
                 onChange={setSelectedCustomer}
                 data={customers.map((customer) => ({
                     value: customer.id,
-                    label: customer.name,
+                    label:
+                        customer.name + ' - ' + getLongStringCurrency(customer),
                 }))}
             />
             <Link to='/customer/add/'>
