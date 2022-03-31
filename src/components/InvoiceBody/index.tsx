@@ -1,6 +1,6 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addInvoice, getInvoices } from '../../reducers/invoices';
+import { addInvoice, editInvoice, getInvoices } from '../../reducers/invoices';
 import { InvoiceItem } from '../../types/invoice-item';
 import { CustomerSelector } from '../CustomerSelector';
 import { ItemList } from '../ItemList';
@@ -11,17 +11,39 @@ import { useNotifications } from '@mantine/notifications';
 import { CrossCircledIcon, CheckCircledIcon } from '@modulz/radix-icons';
 import { Link } from 'react-router-dom';
 import classes from './styles.module.scss';
+import { Customer } from '../../types/customer';
 
-export const InvoiceBody = () => {
+interface Props {
+    invoice?: Invoice;
+    customer?: Customer;
+}
+
+export const InvoiceBody = ({ invoice, customer }: Props) => {
     const notifications = useNotifications();
-    const [selectedCustomer, setSelectedCustomer] = useState<string>('');
-    const [items, setItems] = useState<InvoiceItem[]>([]);
+    const [selectedCustomer, setSelectedCustomer] = useState<string>(
+        customer ? customer.id : ''
+    );
+    const [items, setItems] = useState<InvoiceItem[]>(
+        invoice ? invoice.items : []
+    );
     const invoices = useSelector(getInvoices);
     const dispatch = useDispatch();
     const numberRef = useRef<HTMLInputElement>(null);
     const creationDateRef = useRef<HTMLButtonElement>(null);
     const dueDateRef = useRef<HTMLButtonElement>(null);
     const subjectRef = useRef<HTMLInputElement>(null);
+    const editMode = invoice ? true : false;
+
+    useEffect(() => {
+        if (invoice) {
+            if (numberRef.current) numberRef.current.value = invoice.number;
+            if (creationDateRef.current)
+                creationDateRef.current.value = invoice.creationDate;
+            if (dueDateRef.current && invoice.dueDate)
+                dueDateRef.current.value = invoice.dueDate;
+            if (subjectRef.current) subjectRef.current.value = invoice.subject;
+        }
+    }, [invoice]);
 
     const save = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -45,7 +67,7 @@ export const InvoiceBody = () => {
             return;
         }
 
-        const invoice: Invoice = {
+        const _invoice: Invoice = {
             id: '',
             items,
             customerId: selectedCustomer,
@@ -55,18 +77,30 @@ export const InvoiceBody = () => {
         };
 
         if (dueDateRef.current.value) {
-            invoice.dueDate = dueDateRef.current.value;
+            _invoice.dueDate = dueDateRef.current.value;
         }
 
-        dispatch(
-            addInvoice(invoice, () => {
-                notifications.showNotification({
-                    message: 'New customer added',
-                    color: 'green',
-                    icon: <CheckCircledIcon />,
-                });
-            })
-        );
+        if (editMode) {
+            dispatch(
+                editInvoice(_invoice, () => {
+                    notifications.showNotification({
+                        message: 'Invoice edited successfully',
+                        color: 'green',
+                        icon: <CheckCircledIcon />,
+                    });
+                })
+            );
+        } else {
+            dispatch(
+                addInvoice(_invoice, () => {
+                    notifications.showNotification({
+                        message: 'New invoice added',
+                        color: 'green',
+                        icon: <CheckCircledIcon />,
+                    });
+                })
+            );
+        }
     };
     const defaultInvoiceNum = useMemo(() => {
         let maxInvoiceNum = 0;
@@ -108,7 +142,7 @@ export const InvoiceBody = () => {
                     <Text>View your invoices</Text>
                 </Link>
                 <Button type='submit' variant='filled' onClick={save}>
-                    Add Invoice
+                    {editMode ? 'Edit invoice' : 'Add Invoice'}
                 </Button>
             </div>
         </>

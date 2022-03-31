@@ -16,6 +16,7 @@ export const CustomerSelector = ({
     setSelectedCustomer,
 }: Props) => {
     const customers: Customer[] = useSelector(getCustomers);
+
     return (
         <div>
             <Select

@@ -4,6 +4,13 @@ import { Customer } from '../types/customer';
 
 type initialState = Customer[];
 
+export const EmptyCustomer: Customer = {
+    id: '',
+    name: '',
+    address: '',
+    currency: '',
+};
+
 const getReducers = () => {
     const addCustomer: CaseReducer<initialState, PayloadAction<Customer>> = (
         state,

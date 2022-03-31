@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AddCustomer } from '../pages/AddCustomer';
 import { AddInvoice } from '../pages/AddInvoice';
+import { EditInvoice } from '../pages/EditInvoice';
 import { Invoices } from '../pages/Invoices';
 import { RouteInterface } from '../types/route';
 
@@ -12,6 +13,10 @@ const routes: RouteInterface[] = [
     {
         url: '/invoice/add/',
         component: AddInvoice,
+    },
+    {
+        url: '/invoice/edit/:id',
+        component: EditInvoice,
     },
     {
         url: '/customer/add/',
